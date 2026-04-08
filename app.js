@@ -107,6 +107,11 @@ function doSearch() {
     d.company.toLowerCase().includes(query.toLowerCase())
   );
 
+  // Track search in Google Analytics
+  if (typeof gtag === 'function') {
+    gtag('event', 'search', { search_term: query, results_count: matches.length });
+  }
+
   renderResults(matches, query);
   document.getElementById('companyListTitle').textContent = '';
   document.getElementById('companyList').innerHTML = '';
