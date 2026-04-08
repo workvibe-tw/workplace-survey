@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>你的公司，真的適合進去嗎？｜匿名職場氣氛調查</title>
+  <meta name="description" content="面試不會告訴你的事，這裡有人說真話。搜尋公司名稱，看到真實的主管風格、團隊氣氛、加班程度。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <h1>職場真心話</h1>
+      <p class="subtitle">面試不會告訴你的事，這裡有人說真話</p>
+    </div>
+  </header>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <div class="container">
+      <div class="search-box">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="搜尋公司名稱..."
+          autocomplete="off"
+        >
+        <button id="searchBtn">搜尋</button>
+      </div>
+      <p class="search-hint">例如：台積電、鴻海、四大、國泰</p>
+      <div class="stats" id="stats"></div>
+    </div>
+  </section>
+
+  <!-- Results Section -->
+  <section class="results-section">
+    <div class="container">
+      <div id="results"></div>
+    </div>
+  </section>
+
+  <!-- Company List Section -->
+  <section class="company-list-section">
+    <div class="container">
+      <h2 id="companyListTitle">所有公司</h2>
+      <div id="companyList"></div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>你也有話想說？</h2>
+      <p>匿名分享你的真實經驗，幫後面的人少踩一點雷</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn">填寫調查（1 分鐘）</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>完全匿名 · 不記錄信箱 · 不追蹤身份</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

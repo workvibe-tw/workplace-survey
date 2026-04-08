@@ -1,0 +1,260 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+header {
+  background: #1a1a2e;
+  color: white;
+  padding: 40px 0 30px;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+header .subtitle {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Search */
+.search-section {
+  background: white;
+  padding: 30px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.search-box {
+  display: flex;
+  gap: 8px;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: #4a6cf7;
+}
+
+.search-box button {
+  padding: 14px 24px;
+  font-size: 16px;
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-box button:hover {
+  background: #3a5ce5;
+}
+
+.search-hint {
+  font-size: 13px;
+  color: #999;
+  margin-top: 8px;
+}
+
+.stats {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Results */
+.results-section {
+  padding: 20px 0;
+}
+
+.review-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.review-card .company-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.review-card .meta {
+  font-size: 13px;
+  color: #999;
+  margin-bottom: 12px;
+}
+
+.review-card .ratings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.rating-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.rating-1 { background: #fee2e2; color: #dc2626; }
+.rating-2 { background: #ffedd5; color: #ea580c; }
+.rating-3 { background: #fef9c3; color: #a16207; }
+.rating-4 { background: #dcfce7; color: #16a34a; }
+.rating-5 { background: #dbeafe; color: #2563eb; }
+
+.review-card .quote {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  border-left: 3px solid #4a6cf7;
+  border-radius: 0 8px 8px 0;
+}
+
+/* Company List */
+.company-list-section {
+  padding: 20px 0 40px;
+}
+
+.company-list-section h2 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  color: #1a1a2e;
+}
+
+.company-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.company-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: white;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: all 0.2s;
+  border: 1px solid #e8e8e8;
+}
+
+.company-chip:hover {
+  background: #4a6cf7;
+  color: white;
+  border-color: #4a6cf7;
+}
+
+.company-chip .count {
+  margin-left: 6px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* CTA */
+.cta-section {
+  background: #1a1a2e;
+  color: white;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.cta-section h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.cta-section p {
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: #4a6cf7;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.cta-btn:hover {
+  background: #3a5ce5;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 13px;
+  color: #999;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+/* No results */
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.no-results a {
+  color: #4a6cf7;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  header h1 { font-size: 22px; }
+  .search-box { flex-direction: column; }
+  .search-box button { width: 100%; }
+  .review-card .ratings { flex-direction: column; }
+}
