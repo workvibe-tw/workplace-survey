@@ -22,16 +22,16 @@ async function loadData() {
 
     const companies = getUniqueCompanies();
 
-    // Update hero stats
+    // Hero stats
     document.getElementById('heroReviewCount').textContent = allData.length;
     document.getElementById('heroCompanyCount').textContent = companies.length;
     const lastDate = allData.length > 0 ? allData[allData.length - 1].timestamp.split(' ')[0] : '';
     document.getElementById('heroUpdateDate').textContent = lastDate || '今天';
 
+    // Render sections
     document.getElementById('results').innerHTML = '';
-
-    // Show featured reviews (top 3 with longest honestWord)
     renderFeatured();
+    renderCharts();
     renderCompanyList(companies);
   } catch (err) {
     document.getElementById('results').innerHTML =
@@ -39,6 +39,9 @@ async function loadData() {
   }
 }
 
+// ===========================
+// Featured Reviews
+// ===========================
 function renderFeatured() {
   const featured = allData
     .filter(d => d.honestWord && d.honestWord.trim() && d.honestWord.trim() !== '無' && d.honestWord.trim().length > 15)
@@ -48,12 +51,68 @@ function renderFeatured() {
   if (featured.length === 0) return;
 
   const container = document.getElementById('results');
-  container.innerHTML = '<h2 class="section-title">最新真實分享</h2>';
+  container.innerHTML = '<h2 class="section-title">真實分享長這樣</h2>';
   featured.forEach(d => {
     container.innerHTML += createCard(d);
   });
 }
 
+// ===========================
+// Data Charts (pure CSS bars)
+// ===========================
+function renderCharts() {
+  const managerLabels = {
+    '1': '什麼都要管',
+    '2': '偏嚴格',
+    '3': '適中',
+    '4': '偏放手',
+    '5': '完全放手'
+  };
+
+  const overtimeLabels = {
+    '1': '根本被騙',
+    '2': '差蠻多',
+    '3': '偶爾加班',
+    '4': '大致符合',
+    '5': '完全如面試所說'
+  };
+
+  const managerCounts = countByRating(allData, 'managerStyle');
+  const overtimeCounts = countByRating(allData, 'overtimeReality');
+
+  document.getElementById('managerChart').innerHTML = renderBarChart(managerCounts, managerLabels, allData.length);
+  document.getElementById('overtimeChart').innerHTML = renderBarChart(overtimeCounts, overtimeLabels, allData.length);
+}
+
+function countByRating(data, field) {
+  const counts = { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 };
+  data.forEach(d => {
+    const num = String(parseInt(d[field]) || 3);
+    if (counts[num] !== undefined) counts[num]++;
+  });
+  return counts;
+}
+
+function renderBarChart(counts, labels, total) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    const count = counts[String(i)] || 0;
+    const pct = total > 0 ? Math.round(count / total * 100) : 0;
+    html += `
+      <div class="bar-row">
+        <span class="bar-label">${labels[String(i)]}</span>
+        <div class="bar-track">
+          <div class="bar-fill bar-color-${i}" style="width:${pct}%"></div>
+        </div>
+        <span class="bar-pct">${pct}%</span>
+      </div>`;
+  }
+  return html;
+}
+
+// ===========================
+// CSV Parser
+// ===========================
 function parseCSV(text) {
   const lines = text.split('\n');
   if (lines.length < 2) return [];
@@ -108,6 +167,9 @@ function parseCSVLine(line) {
   return result;
 }
 
+// ===========================
+// Company Helpers
+// ===========================
 function getUniqueCompanies() {
   const map = {};
   allData.forEach(d => {
@@ -117,11 +179,15 @@ function getUniqueCompanies() {
   return Object.entries(map).sort((a, b) => b[1] - a[1]);
 }
 
+// ===========================
+// Search
+// ===========================
 function doSearch() {
   const query = document.getElementById('searchInput').value.trim();
+  const container = document.getElementById('searchResults');
+
   if (!query) {
-    document.getElementById('results').innerHTML = '';
-    renderFeatured();
+    container.innerHTML = '';
     document.getElementById('companyListTitle').textContent = '所有公司';
     renderCompanyList();
     return;
@@ -131,7 +197,6 @@ function doSearch() {
     d.company.toLowerCase().includes(query.toLowerCase())
   );
 
-  // Track search in Google Analytics
   if (typeof gtag === 'function') {
     gtag('event', 'search', { search_term: query, results_count: matches.length });
   }
@@ -144,11 +209,11 @@ function doSearch() {
 function searchCompany(name) {
   document.getElementById('searchInput').value = name;
   doSearch();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('searchArea').scrollIntoView({ behavior: 'smooth' });
 }
 
 function renderResults(data, query) {
-  const container = document.getElementById('results');
+  const container = document.getElementById('searchResults');
 
   if (data.length === 0) {
     container.innerHTML = `
@@ -166,8 +231,30 @@ function renderResults(data, query) {
   data.forEach(d => {
     container.innerHTML += createCard(d);
   });
+
+  // Related companies
+  const matchedCompanies = new Set(data.map(d => d.company));
+  const allCompanies = getUniqueCompanies();
+  const related = allCompanies
+    .filter(([name]) => !matchedCompanies.has(name))
+    .slice(0, 6);
+
+  if (related.length > 0) {
+    container.innerHTML += `
+      <div class="related-section">
+        <h3>也有人評了這些公司</h3>
+        <div class="company-grid">
+          ${related.map(([name, count]) =>
+            `<span class="company-chip" onclick="searchCompany('${escapeAttr(name)}')">${escapeHTML(name)}<span class="count">(${count})</span></span>`
+          ).join('')}
+        </div>
+      </div>`;
+  }
 }
 
+// ===========================
+// Card Rendering
+// ===========================
 function createCard(d) {
   return `
     <div class="review-card">
@@ -189,6 +276,9 @@ function ratingTag(label, value) {
   return `<span class="rating-tag rating-${num}">${label}：${escapeHTML(value)}</span>`;
 }
 
+// ===========================
+// Company List
+// ===========================
 function renderCompanyList(companies) {
   companies = companies || getUniqueCompanies();
   const container = document.getElementById('companyList');
@@ -205,6 +295,9 @@ function renderCompanyList(companies) {
     '</div>';
 }
 
+// ===========================
+// Utils
+// ===========================
 function escapeHTML(str) {
   if (!str) return '';
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');

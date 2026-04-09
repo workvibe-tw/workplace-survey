@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>職場真心話｜台灣白領匿名職場文化資料庫</title>
-  <meta name="description" content="在入職前，看見面試不會告訴你的事。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。">
+  <meta name="description" content="入職前，先看見真實公司文化。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。">
   <meta name="theme-color" content="#fbfbfd">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-85Y1PS985P"></script>
@@ -18,12 +18,11 @@
 </head>
 <body>
 
-  <!-- Header / Hero -->
+  <!-- Hero -->
   <header>
     <div class="container">
-      <h1>職場真心話</h1>
-      <p class="subtitle">給台灣白領的匿名職場文化資料庫</p>
-      <p class="tagline">在入職前，看見面試不會告訴你的事</p>
+      <h1>入職前，先看見真實公司文化</h1>
+      <p class="subtitle">JD 不會寫、面試不會說的工作氣氛、主管風格、發展性，這裡有人匿名分享。</p>
       <div class="hero-stats">
         <div class="hero-stat">
           <span class="hero-stat-num" id="heroReviewCount">-</span>
@@ -40,29 +39,87 @@
           <span class="hero-stat-label">最近更新</span>
         </div>
       </div>
+      <div class="hero-buttons">
+        <a href="#featured" class="cta-btn cta-primary-hero">查看公司心得</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-secondary-hero">匿名分享經驗</a>
+      </div>
+      <p class="hero-trust-line">匿名分享 · 不需登入 · 不收姓名 · 可申請下架不當內容</p>
     </div>
   </header>
 
-  <!-- Search Section -->
-  <section class="search-section">
+  <!-- What You Can See -->
+  <section class="what-section">
     <div class="container">
+      <h2>你最想知道的，通常不是 JD 上那幾行字</h2>
+      <div class="what-grid">
+        <div class="what-card">
+          <div class="what-icon">💬</div>
+          <h3>工作氣氛</h3>
+          <p>團隊互相幫忙，還是各做各的？</p>
+        </div>
+        <div class="what-card">
+          <div class="what-icon">👤</div>
+          <h3>主管風格</h3>
+          <p>願意帶人，還是只丟事情？</p>
+        </div>
+        <div class="what-card">
+          <div class="what-icon">⏰</div>
+          <h3>工時與壓力</h3>
+          <p>加班是偶爾還是常態？</p>
+        </div>
+        <div class="what-card">
+          <div class="what-icon">📈</div>
+          <h3>發展性</h3>
+          <p>學得到東西，還是在消耗？</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Reviews -->
+  <section class="results-section" id="featured">
+    <div class="container">
+      <div id="results"></div>
+    </div>
+  </section>
+
+  <!-- Data Overview -->
+  <section class="data-overview-section">
+    <div class="container">
+      <h2>全站數據總覽</h2>
+      <div class="chart-grid" id="chartGrid">
+        <div class="chart-card">
+          <h3>主管風格分佈</h3>
+          <div id="managerChart" class="bar-chart"></div>
+        </div>
+        <div class="chart-card">
+          <h3>加班真實度</h3>
+          <div id="overtimeChart" class="bar-chart"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-section" id="searchArea">
+    <div class="container">
+      <h2 class="search-title">搜尋你想了解的公司</h2>
       <div class="search-box">
         <input
           type="text"
           id="searchInput"
-          placeholder="搜尋公司名稱..."
+          placeholder="例如：台積電、鴻海、四大、國泰、AMD"
           autocomplete="off"
         >
         <button id="searchBtn">搜尋</button>
       </div>
-      <p class="search-hint">可搜尋公司或產業，例如：台積電、鴻海、四大、國泰、AMD</p>
     </div>
   </section>
 
-  <!-- Results Section (featured cards show here on load) -->
-  <section class="results-section">
+  <!-- Search Results -->
+  <section class="search-results-section">
     <div class="container">
-      <div id="results"></div>
+      <div id="searchResults"></div>
     </div>
   </section>
 
@@ -74,47 +131,83 @@
     </div>
   </section>
 
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>你的一句真話，可能幫別人避開一份爛工作</h2>
+      <p>很多人進公司前知道薪水和職稱，但真正影響每天感受的，是團隊氣氛、主管風格、還有進去後才發現的落差。</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-primary">匿名分享我的經驗</a>
+      <p class="cta-note">不需登入，不收姓名，請避免填寫可識別個人或客戶資訊。</p>
+    </div>
+  </section>
+
   <!-- Trust Section -->
   <section class="trust-section">
     <div class="container">
-      <h2>我們怎麼保護你</h2>
+      <h2>我們怎麼保護你的匿名</h2>
       <div class="trust-grid">
         <div class="trust-item">
           <div class="trust-icon">🔒</div>
-          <h3>完全匿名</h3>
-          <p>不要求登入、不蒐集電子郵件、不記錄 IP 位址</p>
+          <h3>不需登入帳號</h3>
+          <p>不要求登入、不蒐集電子郵件、不記錄 IP</p>
         </div>
         <div class="trust-item">
           <div class="trust-icon">👁</div>
           <h3>內容審核</h3>
-          <p>可辨識特定個人的資訊、情緒性辱罵、不實指控將被移除</p>
+          <p>可辨識個人的資訊、情緒性辱罵、不實指控將被移除</p>
         </div>
         <div class="trust-item">
           <div class="trust-icon">📋</div>
-          <h3>只留文化資訊</h3>
+          <h3>僅呈現文化資訊</h3>
           <p>保留對管理風格、工時、團隊氣氛、發展性的真實描述</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
+  <!-- FAQ -->
+  <section class="faq-section">
     <div class="container">
-      <h2>你的一句真話，可能幫別人避開一份爛工作</h2>
-      <p>1 分鐘匿名填寫，填完即可看更多真實分享</p>
-      <div class="cta-buttons">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-primary">匿名分享經驗</a>
-        <a href="#results" class="cta-btn cta-secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">看真實分享</a>
-      </div>
+      <h2>常見問題</h2>
+      <details class="faq-item">
+        <summary>這裡的內容是真的嗎？</summary>
+        <p>所有內容來自使用者匿名分享，旨在幫助了解真實職場文化。請當作參考資訊，不是唯一判斷依據。</p>
+      </details>
+      <details class="faq-item">
+        <summary>我需要登入才能看嗎？</summary>
+        <p>不需要，所有內容完全公開，不需要登入或註冊。</p>
+      </details>
+      <details class="faq-item">
+        <summary>分享會暴露身份嗎？</summary>
+        <p>不會。我們不要求姓名，也不記錄任何可識別資訊。請避免填寫同事姓名、客戶名稱或過度具體的細節。</p>
+      </details>
+      <details class="faq-item">
+        <summary>發現不當內容怎麼辦？</summary>
+        <p>請來信 workvibe.tw@gmail.com 提出下架申請，我們會在 72 小時內處理。</p>
+      </details>
     </div>
   </section>
 
-  <!-- Disclaimer (minimal) -->
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#" onclick="document.querySelector('.disclaimer-section details').open=true;document.querySelector('.disclaimer-section').scrollIntoView({behavior:'smooth'});return false;">免責聲明</a>
+        <span>·</span>
+        <a href="#" onclick="document.querySelector('.disclaimer-section details').open=true;document.querySelector('.disclaimer-section').scrollIntoView({behavior:'smooth'});return false;">隱私政策</a>
+        <span>·</span>
+        <a href="mailto:workvibe.tw@gmail.com">下架申請</a>
+      </div>
+      <p class="footer-tagline">完全匿名 · 不記錄信箱 · 不追蹤身份</p>
+      <p class="footer-brand">職場真心話｜台灣白領匿名職場文化資料庫</p>
+    </div>
+  </footer>
+
+  <!-- Disclaimer (hidden, opened by footer links) -->
   <section class="disclaimer-section">
     <div class="container">
       <details>
-        <summary>免責聲明 · 隱私政策 · 內容下架申請</summary>
+        <summary>免責聲明 · 隱私政策 · 內容規範</summary>
         <div class="disclaimer-content">
           <h3>免責聲明</h3>
           <p>本平台為使用者自發分享職場經驗之中立媒介，所有內容均由填寫者匿名提供，不代表本平台之立場或認可其真實性。</p>
@@ -131,13 +224,6 @@
       </details>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <p>完全匿名 · 不記錄信箱 · 不追蹤身份</p>
-    </div>
-  </footer>
 
   <script src="app.js"></script>
 </body>
