@@ -68,6 +68,48 @@ header .subtitle {
   letter-spacing: 0.1px;
 }
 
+header .tagline {
+  font-size: 15px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+/* Hero Stats */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-light);
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-stat-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.hero-stat-label {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border-light);
+}
+
 /* ===========================
    Search Section
    =========================== */
@@ -277,6 +319,66 @@ header .subtitle {
 }
 
 /* ===========================
+   Section Titles
+   =========================== */
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+}
+
+/* ===========================
+   Trust Section
+   =========================== */
+.trust-section {
+  padding: 48px 0;
+  background: var(--surface-secondary);
+}
+
+.trust-section h2 {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: -0.3px;
+  margin-bottom: 28px;
+  color: var(--text-primary);
+}
+
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.trust-item {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 24px 20px;
+  text-align: center;
+  border: 1px solid var(--border-light);
+}
+
+.trust-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+}
+
+.trust-item h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.trust-item p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===========================
    CTA Section
    =========================== */
 .cta-section {
@@ -320,6 +422,29 @@ header .subtitle {
 
 .cta-btn:active {
   transform: scale(0.99);
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cta-primary {
+  background: var(--accent);
+  color: white;
+}
+
+.cta-secondary {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.cta-secondary:hover {
+  background: rgba(255,255,255,0.25);
+  box-shadow: none;
 }
 
 /* ===========================
@@ -455,5 +580,23 @@ footer {
 
   .cta-section p {
     font-size: 15px;
+  }
+
+  .hero-stats {
+    gap: 16px;
+  }
+
+  .hero-stat-num {
+    font-size: 20px;
+  }
+
+  .trust-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
   }
 }

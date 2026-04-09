@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>職場真心話｜匿名職場文化調查</title>
-  <meta name="description" content="面試不會告訴你的事，這裡有人說真話。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。">
+  <title>職場真心話｜台灣白領匿名職場文化資料庫</title>
+  <meta name="description" content="在入職前，看見面試不會告訴你的事。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。">
   <meta name="theme-color" content="#fbfbfd">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-85Y1PS985P"></script>
@@ -18,11 +18,28 @@
 </head>
 <body>
 
-  <!-- Header -->
+  <!-- Header / Hero -->
   <header>
     <div class="container">
       <h1>職場真心話</h1>
-      <p class="subtitle">面試不會告訴你的事，這裡有人說真話</p>
+      <p class="subtitle">給台灣白領的匿名職場文化資料庫</p>
+      <p class="tagline">在入職前，看見面試不會告訴你的事</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="heroReviewCount">-</span>
+          <span class="hero-stat-label">則匿名分享</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="heroCompanyCount">-</span>
+          <span class="hero-stat-label">家公司</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="hero-stat-num" id="heroUpdateDate">-</span>
+          <span class="hero-stat-label">最近更新</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -38,12 +55,11 @@
         >
         <button id="searchBtn">搜尋</button>
       </div>
-      <p class="search-hint">例如：台積電、鴻海、四大、國泰</p>
-      <div class="stats" id="stats"></div>
+      <p class="search-hint">可搜尋公司或產業，例如：台積電、鴻海、四大、國泰、AMD</p>
     </div>
   </section>
 
-  <!-- Results Section -->
+  <!-- Results Section (featured cards show here on load) -->
   <section class="results-section">
     <div class="container">
       <div id="results"></div>
@@ -58,29 +74,56 @@
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="cta-section">
+  <!-- Trust Section -->
+  <section class="trust-section">
     <div class="container">
-      <h2>你也有話想說？</h2>
-      <p>匿名分享你的真實經驗，幫後面的人少踩一點雷</p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn">填寫調查（1 分鐘）</a>
+      <h2>我們怎麼保護你</h2>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">🔒</div>
+          <h3>完全匿名</h3>
+          <p>不要求登入、不蒐集電子郵件、不記錄 IP 位址</p>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">👁</div>
+          <h3>內容審核</h3>
+          <p>可辨識特定個人的資訊、情緒性辱罵、不實指控將被移除</p>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📋</div>
+          <h3>只留文化資訊</h3>
+          <p>保留對管理風格、工時、團隊氣氛、發展性的真實描述</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Disclaimer -->
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>你的一句真話，可能幫別人避開一份爛工作</h2>
+      <p>1 分鐘匿名填寫，填完即可看更多真實分享</p>
+      <div class="cta-buttons">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-primary">匿名分享經驗</a>
+        <a href="#results" class="cta-btn cta-secondary" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">看真實分享</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Disclaimer (minimal) -->
   <section class="disclaimer-section">
     <div class="container">
       <details>
-        <summary>免責聲明與隱私政策</summary>
+        <summary>免責聲明 · 隱私政策 · 內容下架申請</summary>
         <div class="disclaimer-content">
           <h3>免責聲明</h3>
-          <p>本平台為使用者自發分享職場經驗之中立媒介，所有內容均由填寫者匿名提供，不代表本平台之立場或認可其真實性。本平台不對任何使用者提供之內容負責。</p>
+          <p>本平台為使用者自發分享職場經驗之中立媒介，所有內容均由填寫者匿名提供，不代表本平台之立場或認可其真實性。</p>
 
-          <h3>內容規範</h3>
-          <p>填寫者不得於評價中提及可辨識特定個人之資訊（包含但不限於姓名、外貌特徵、唯一職稱），不得捏造不實事件，不得使用侮辱性言語。違反上述規範之內容，本平台有權逕行移除。</p>
+          <h3>內容規範與審核</h3>
+          <p>填寫者不得提及可辨識特定個人之資訊（姓名、外貌特徵、唯一職稱），不得捏造不實事件，不得使用侮辱性言語。違反者本平台有權逕行移除。我們保留對管理風格、工時、團隊氣氛等職場文化的真實描述。</p>
 
           <h3>隱私政策</h3>
-          <p>本平台透過 Google 表單收集資料，不記錄填寫者之電子郵件、IP 位址或任何可識別個人身份之資訊。收集之資料僅用於匿名呈現職場文化資訊。</p>
+          <p>本平台透過 Google 表單收集資料，不要求登入、不記錄電子郵件、IP 位址或任何可識別個人身份之資訊。公開頁面只顯示整理後的匿名內容。若內容過於具體、可能識別個人或部門，將不予公開。</p>
 
           <h3>通知與下架</h3>
           <p>若您認為平台上之內容侵害您的權益，請來信 <strong>workvibe.tw@gmail.com</strong> 提出移除請求，本平台將於 72 小時內處理。</p>

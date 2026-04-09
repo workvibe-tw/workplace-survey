@@ -20,15 +20,38 @@ async function loadData() {
     const text = await res.text();
     allData = parseCSV(text);
 
-    document.getElementById('stats').textContent =
-      `目前共 ${allData.length} 筆真實回覆，來自 ${getUniqueCompanies().length} 家公司`;
+    const companies = getUniqueCompanies();
+
+    // Update hero stats
+    document.getElementById('heroReviewCount').textContent = allData.length;
+    document.getElementById('heroCompanyCount').textContent = companies.length;
+    const lastDate = allData.length > 0 ? allData[allData.length - 1].timestamp.split(' ')[0] : '';
+    document.getElementById('heroUpdateDate').textContent = lastDate || '今天';
 
     document.getElementById('results').innerHTML = '';
-    renderCompanyList();
+
+    // Show featured reviews (top 3 with longest honestWord)
+    renderFeatured();
+    renderCompanyList(companies);
   } catch (err) {
     document.getElementById('results').innerHTML =
       '<div class="loading">資料載入失敗，請重新整理頁面</div>';
   }
+}
+
+function renderFeatured() {
+  const featured = allData
+    .filter(d => d.honestWord && d.honestWord.trim() && d.honestWord.trim() !== '無' && d.honestWord.trim().length > 15)
+    .sort((a, b) => b.honestWord.length - a.honestWord.length)
+    .slice(0, 3);
+
+  if (featured.length === 0) return;
+
+  const container = document.getElementById('results');
+  container.innerHTML = '<h2 class="section-title">最新真實分享</h2>';
+  featured.forEach(d => {
+    container.innerHTML += createCard(d);
+  });
 }
 
 function parseCSV(text) {
@@ -98,6 +121,7 @@ function doSearch() {
   const query = document.getElementById('searchInput').value.trim();
   if (!query) {
     document.getElementById('results').innerHTML = '';
+    renderFeatured();
     document.getElementById('companyListTitle').textContent = '所有公司';
     renderCompanyList();
     return;
@@ -137,7 +161,7 @@ function renderResults(data, query) {
     return;
   }
 
-  container.innerHTML = `<p style="margin-bottom:16px;color:#666">找到 ${data.length} 筆「${escapeHTML(query)}」的回覆</p>`;
+  container.innerHTML = `<p class="results-count">找到 ${data.length} 筆「${escapeHTML(query)}」的回覆</p>`;
 
   data.forEach(d => {
     container.innerHTML += createCard(d);
@@ -165,8 +189,8 @@ function ratingTag(label, value) {
   return `<span class="rating-tag rating-${num}">${label}：${escapeHTML(value)}</span>`;
 }
 
-function renderCompanyList() {
-  const companies = getUniqueCompanies();
+function renderCompanyList(companies) {
+  companies = companies || getUniqueCompanies();
   const container = document.getElementById('companyList');
 
   if (companies.length === 0) {
