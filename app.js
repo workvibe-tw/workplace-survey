@@ -7,8 +7,42 @@ document.addEventListener('DOMContentLoaded', () => {
   loadData();
 
   document.getElementById('searchBtn').addEventListener('click', doSearch);
-  document.getElementById('searchInput').addEventListener('keydown', (e) => {
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') doSearch();
+  });
+
+  // Live search suggestions
+  searchInput.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+    const sugBox = document.getElementById('searchSuggestions');
+    if (!query || query.length < 1) {
+      sugBox.innerHTML = '';
+      sugBox.style.display = 'none';
+      return;
+    }
+    const companies = getUniqueCompanies();
+    const matches = companies.filter(([name]) =>
+      name.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 5);
+    if (matches.length === 0) {
+      sugBox.innerHTML = '';
+      sugBox.style.display = 'none';
+      return;
+    }
+    sugBox.style.display = 'block';
+    sugBox.innerHTML = matches.map(([name, count]) =>
+      `<div class="suggestion-item" onclick="searchCompany('${escapeAttr(name)}')">${escapeHTML(name)} <span class="suggestion-count">(${count} 筆)</span></div>`
+    ).join('');
+  });
+
+  // Close suggestions on click outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper')) {
+      const sugBox = document.getElementById('searchSuggestions');
+      sugBox.innerHTML = '';
+      sugBox.style.display = 'none';
+    }
   });
 });
 
@@ -31,6 +65,7 @@ async function loadData() {
     // Render sections
     document.getElementById('results').innerHTML = '';
     renderFeatured();
+    renderLatest();
     renderCharts();
     renderCompanyList(companies);
   } catch (err) {
@@ -40,7 +75,7 @@ async function loadData() {
 }
 
 // ===========================
-// Featured Reviews
+// Featured Reviews (best content)
 // ===========================
 function renderFeatured() {
   const featured = allData
@@ -53,6 +88,23 @@ function renderFeatured() {
   const container = document.getElementById('results');
   container.innerHTML = '<h2 class="section-title">真實分享長這樣</h2>';
   featured.forEach(d => {
+    container.innerHTML += createCard(d);
+  });
+}
+
+// ===========================
+// Latest Reviews (newest 5)
+// ===========================
+function renderLatest() {
+  const container = document.getElementById('latestReviews');
+  const latest = allData.slice(-5).reverse();
+
+  if (latest.length === 0) {
+    container.innerHTML = '<div class="loading">暫無資料</div>';
+    return;
+  }
+
+  latest.forEach(d => {
     container.innerHTML += createCard(d);
   });
 }
@@ -186,6 +238,11 @@ function doSearch() {
   const query = document.getElementById('searchInput').value.trim();
   const container = document.getElementById('searchResults');
 
+  // Close suggestions
+  const sugBox = document.getElementById('searchSuggestions');
+  sugBox.innerHTML = '';
+  sugBox.style.display = 'none';
+
   if (!query) {
     container.innerHTML = '';
     document.getElementById('companyListTitle').textContent = '所有公司';
@@ -226,7 +283,29 @@ function renderResults(data, query) {
     return;
   }
 
-  container.innerHTML = `<p class="results-count">找到 ${data.length} 筆「${escapeHTML(query)}」的回覆</p>`;
+  // Aggregate scores for this company
+  const avgManager = avgRating(data, 'managerStyle');
+  const avgVibe = avgRating(data, 'teamVibe');
+  const avgOvertime = avgRating(data, 'overtimeReality');
+
+  container.innerHTML = `
+    <div class="company-summary">
+      <h3>${escapeHTML(query)} — ${data.length} 筆回覆</h3>
+      <div class="summary-scores">
+        <div class="summary-score">
+          <span class="summary-label">主管風格</span>
+          <span class="summary-value rating-tag rating-${Math.round(avgManager)}">${avgManager.toFixed(1)}</span>
+        </div>
+        <div class="summary-score">
+          <span class="summary-label">團隊氣氛</span>
+          <span class="summary-value rating-tag rating-${Math.round(avgVibe)}">${avgVibe.toFixed(1)}</span>
+        </div>
+        <div class="summary-score">
+          <span class="summary-label">加班真實度</span>
+          <span class="summary-value rating-tag rating-${Math.round(avgOvertime)}">${avgOvertime.toFixed(1)}</span>
+        </div>
+      </div>
+    </div>`;
 
   data.forEach(d => {
     container.innerHTML += createCard(d);
@@ -252,13 +331,26 @@ function renderResults(data, query) {
   }
 }
 
+function avgRating(data, field) {
+  let sum = 0, count = 0;
+  data.forEach(d => {
+    const num = parseInt(d[field]);
+    if (num >= 1 && num <= 5) { sum += num; count++; }
+  });
+  return count > 0 ? sum / count : 3;
+}
+
 // ===========================
 // Card Rendering
 // ===========================
 function createCard(d) {
+  const timeStr = formatTime(d.timestamp);
   return `
     <div class="review-card">
-      <div class="company-name">${escapeHTML(d.company)}</div>
+      <div class="card-header">
+        <div class="company-name">${escapeHTML(d.company)}</div>
+        <div class="card-time">${timeStr}</div>
+      </div>
       <div class="meta">${escapeHTML(d.department)} · ${escapeHTML(d.tenure)}</div>
       <div class="ratings">
         ${ratingTag('主管', d.managerStyle)}
@@ -269,6 +361,14 @@ function createCard(d) {
         ? `<div class="quote">${escapeHTML(d.honestWord)}</div>`
         : ''}
     </div>`;
+}
+
+function formatTime(timestamp) {
+  if (!timestamp) return '';
+  // Format: "2026/4/6 下午 3:42:50" -> "4/6"
+  const match = timestamp.match(/(\d+)\/(\d+)\/(\d+)/);
+  if (match) return `${match[2]}/${match[3]}`;
+  return '';
 }
 
 function ratingTag(label, value) {

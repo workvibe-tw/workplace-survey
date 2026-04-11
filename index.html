@@ -4,8 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>職場真心話｜台灣白領匿名職場文化資料庫</title>
-  <meta name="description" content="入職前，先看見真實公司文化。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。">
+  <meta name="description" content="入職前，先看見真實公司文化。搜尋公司名稱，看真實主管風格、團隊氣氛、加班程度。匿名分享，不記錄信箱。">
   <meta name="theme-color" content="#fbfbfd">
+  <meta property="og:title" content="職場真心話｜入職前，先看見真實公司文化">
+  <meta property="og:description" content="JD 不會寫、面試不會說的工作氣氛、主管風格、發展性，這裡有人匿名分享。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://workvibe-tw.github.io/workplace-survey/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://workvibe-tw.github.io/workplace-survey/">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-85Y1PS985P"></script>
   <script>
@@ -104,14 +110,17 @@
   <section class="search-section" id="searchArea">
     <div class="container">
       <h2 class="search-title">搜尋你想了解的公司</h2>
-      <div class="search-box">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="例如：台積電、鴻海、四大、國泰、AMD"
-          autocomplete="off"
-        >
-        <button id="searchBtn">搜尋</button>
+      <div class="search-wrapper">
+        <div class="search-box">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="例如：台積電、鴻海、四大、國泰、AMD"
+            autocomplete="off"
+          >
+          <button id="searchBtn">搜尋</button>
+        </div>
+        <div id="searchSuggestions" class="search-suggestions"></div>
       </div>
     </div>
   </section>
@@ -120,6 +129,14 @@
   <section class="search-results-section">
     <div class="container">
       <div id="searchResults"></div>
+    </div>
+  </section>
+
+  <!-- Latest Reviews -->
+  <section class="latest-section">
+    <div class="container">
+      <h2 class="section-title">最新填寫</h2>
+      <div id="latestReviews"></div>
     </div>
   </section>
 
