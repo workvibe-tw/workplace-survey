@@ -6,6 +6,33 @@ let allData = [];
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
 
+  // Smooth scroll for hero CTA button
+  const heroCta = document.querySelector('.cta-primary-hero');
+  if (heroCta) {
+    heroCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.getElementById('featured');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Back to top button
+  const backToTopBtn = document.getElementById('backToTop');
+  if (backToTopBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    }, { passive: true });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   document.getElementById('searchBtn').addEventListener('click', doSearch);
   const searchInput = document.getElementById('searchInput');
   searchInput.addEventListener('keydown', (e) => {
@@ -47,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function loadData() {
-  document.getElementById('results').innerHTML = '<div class="loading">載入資料中...</div>';
+  document.getElementById('results').innerHTML = '<div class="loading">載入資料中<span class="loading-dots"><span></span><span></span><span></span></span></div>';
 
   try {
     const res = await fetch(CSV_URL);
@@ -56,9 +83,9 @@ async function loadData() {
 
     const companies = getUniqueCompanies();
 
-    // Hero stats
-    document.getElementById('heroReviewCount').textContent = allData.length;
-    document.getElementById('heroCompanyCount').textContent = companies.length;
+    // Hero stats with count-up animation
+    animateCountUp(document.getElementById('heroReviewCount'), allData.length);
+    animateCountUp(document.getElementById('heroCompanyCount'), companies.length);
     const lastDate = allData.length > 0 ? allData[allData.length - 1].timestamp.split(' ')[0] : '';
     document.getElementById('heroUpdateDate').textContent = lastDate || '今天';
 
@@ -406,4 +433,27 @@ function escapeHTML(str) {
 function escapeAttr(str) {
   if (!str) return '';
   return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// ===========================
+// Count-up Animation
+// ===========================
+function animateCountUp(el, target) {
+  if (!el || typeof target !== 'number' || target <= 0) {
+    if (el) el.textContent = target;
+    return;
+  }
+  const duration = 1000;
+  const startTime = performance.now();
+  function update(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease-out cubic
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  requestAnimationFrame(update);
 }
