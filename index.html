@@ -47,7 +47,7 @@
       </div>
       <div class="hero-buttons">
         <a href="#featured" class="cta-btn cta-primary-hero">查看公司心得</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-secondary-hero">匿名分享經驗</a>
+        <a href="#formSection" class="cta-btn cta-secondary-hero" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth'});return false;">匿名分享經驗</a>
       </div>
       <p class="hero-trust-line">匿名分享 · 不需登入 · 不收姓名 · 可申請下架不當內容</p>
     </div>
@@ -153,8 +153,27 @@
     <div class="container">
       <h2>你的一句真話，可能幫別人避開一份爛工作</h2>
       <p>很多人進公司前知道薪水和職稱，但真正影響每天感受的，是團隊氣氛、主管風格、還有進去後才發現的落差。</p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform" target="_blank" class="cta-btn cta-primary">匿名分享我的經驗</a>
+      <a href="#formSection" class="cta-btn cta-primary" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth'});return false;">匿名分享我的經驗</a>
       <p class="cta-note">不需登入，不收姓名，請避免填寫可識別個人或客戶資訊。</p>
+    </div>
+  </section>
+
+  <!-- Embedded Form Section -->
+  <section class="form-section" id="formSection">
+    <div class="container">
+      <h2>直接在這裡匿名分享</h2>
+      <p class="form-section-subtitle">不需跳轉、不需登入，30 秒填完</p>
+      <div class="form-embed-wrapper">
+        <iframe
+          src="https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform?embedded=true"
+          width="100%"
+          height="900"
+          frameborder="0"
+          marginheight="0"
+          marginwidth="0"
+          loading="lazy"
+        >載入中...</iframe>
+      </div>
     </div>
   </section>
 

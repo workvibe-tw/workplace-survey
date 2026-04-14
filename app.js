@@ -2,6 +2,7 @@ const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjQFB9Oo2EhWm2
 const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSesYIiGj31EF4-7wD03_QB-5gWAsLck6FYUQu4qVk50KbZc-Q/viewform';
 
 let allData = [];
+let pendingSearch = null;
 
 document.addEventListener('DOMContentLoaded', () => {
   loadData();
@@ -16,6 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
         target.scrollIntoView({ behavior: 'smooth' });
       }
     });
+  }
+
+  // Check URL params for ?company=XXX deep link
+  const urlParams = new URLSearchParams(window.location.search);
+  const companyParam = urlParams.get('company');
+  if (companyParam) {
+    pendingSearch = companyParam;
   }
 
   // Back to top button
@@ -95,6 +103,16 @@ async function loadData() {
     renderLatest();
     renderCharts();
     renderCompanyList(companies);
+
+    // Auto-search if deep link ?company=XXX
+    if (pendingSearch) {
+      document.getElementById('searchInput').value = pendingSearch;
+      pendingSearch = null;
+      doSearch();
+      setTimeout(() => {
+        document.getElementById('searchArea').scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
   } catch (err) {
     document.getElementById('results').innerHTML =
       '<div class="loading">資料載入失敗，請重新整理頁面</div>';
@@ -285,6 +303,11 @@ function doSearch() {
     gtag('event', 'search', { search_term: query, results_count: matches.length });
   }
 
+  // Update URL for shareable deep link
+  const newUrl = new URL(window.location);
+  newUrl.searchParams.set('company', query);
+  history.replaceState(null, '', newUrl);
+
   renderResults(matches, query);
   document.getElementById('companyListTitle').textContent = '';
   document.getElementById('companyList').innerHTML = '';
@@ -301,11 +324,12 @@ function renderResults(data, query) {
 
   if (data.length === 0) {
     container.innerHTML = `
-      <div class="no-results">
-        <p>找不到「${escapeHTML(query)}」的資料</p>
-        <p style="margin-top:8px">
-          <a href="${FORM_URL}" target="_blank">成為第一個填寫的人</a>
-        </p>
+      <div class="no-results-enhanced">
+        <div class="no-results-icon">🔍</div>
+        <h3>「${escapeHTML(query)}」還沒有人分享過</h3>
+        <p>成為第一個分享這間公司真實工作體驗的人，幫助其他人做出更好的職涯選擇。</p>
+        <a href="#formSection" class="cta-btn cta-primary-inline" onclick="document.getElementById('formSection').scrollIntoView({behavior:'smooth'});return false;">我來分享「${escapeHTML(query)}」的經驗</a>
+        <p class="no-results-hint">填寫只需 30 秒，完全匿名</p>
       </div>`;
     return;
   }
@@ -315,9 +339,17 @@ function renderResults(data, query) {
   const avgVibe = avgRating(data, 'teamVibe');
   const avgOvertime = avgRating(data, 'overtimeReality');
 
+  const shareUrl = `${window.location.origin}${window.location.pathname}?company=${encodeURIComponent(query)}`;
+
   container.innerHTML = `
     <div class="company-summary">
-      <h3>${escapeHTML(query)} — ${data.length} 筆回覆</h3>
+      <div class="company-summary-header">
+        <h3>${escapeHTML(query)} — ${data.length} 筆回覆</h3>
+        <button class="share-btn" onclick="shareCompany('${escapeAttr(query)}', '${shareUrl}')" title="分享這間公司的評價">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          <span>分享</span>
+        </button>
+      </div>
       <div class="summary-scores">
         <div class="summary-score">
           <span class="summary-label">主管風格</span>
@@ -433,6 +465,52 @@ function escapeHTML(str) {
 function escapeAttr(str) {
   if (!str) return '';
   return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// ===========================
+// Share
+// ===========================
+function shareCompany(companyName, url) {
+  const shareData = {
+    title: `${companyName} 的職場真心話`,
+    text: `看看 ${companyName} 的匿名職場評價 — 主管風格、團隊氣氛、加班真實度`,
+    url: url
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData).catch(() => {});
+  } else {
+    // Fallback: copy to clipboard
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('連結已複製！可以分享給朋友');
+    }).catch(() => {
+      // Final fallback
+      prompt('複製這個連結分享給朋友：', url);
+    });
+  }
+
+  if (typeof gtag === 'function') {
+    gtag('event', 'share', { method: navigator.share ? 'native' : 'clipboard', content_type: 'company', item_id: companyName });
+  }
+}
+
+function showToast(msg) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+
+  requestAnimationFrame(() => {
+    toast.classList.add('toast-visible');
+  });
+
+  setTimeout(() => {
+    toast.classList.remove('toast-visible');
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
 }
 
 // ===========================
